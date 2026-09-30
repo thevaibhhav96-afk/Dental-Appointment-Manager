@@ -38,4 +38,17 @@ The system covers the following basic clinic operations:
 8. Validate user input.
 9. Prevent basic appointment conflicts.
 
-The project is intended as an academic implementation of a small-scale appointment management system and is not intended to replace a complete hospital or clinical management platform.
+The project is intended as an academic implementation of a small-scale appointment management system and is not intended to replace a complete hospital or clinical management platform. 
+
+## Target Users
+
+- Dental clinics
+- Dental hospitals
+- Dentists
+- Dental clinic staff
+- Receptionists
+- Clinic administrators
+- Patients
+- Clinic managers
+- Appointment coordinators
+- Small and medium-sized dental practices
