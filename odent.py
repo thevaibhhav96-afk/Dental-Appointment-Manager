@@ -1,7 +1,7 @@
-CLINIC_NAME = "O'dent Aesthetic and Family Dental Clinic"
+CLINIC = "O'dent Aesthetic and Family Dental Clinic"
 
 
-services_list = [
+services = [
     "Teeth Cleaning & Scaling",
     "Teeth Whitening",
     "Root Canal Treatment",
@@ -13,146 +13,171 @@ services_list = [
     "Veneers & Crowns"
 ]
 
-time_slots = ["10:00 AM", "11:00 AM", "12:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"]
+
+slots = [
+    "10:00 AM", "11:00 AM", "12:00 PM",
+    "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"
+]
 
 
-booked_patients = []
+bookings = []
 
-
-def view_overview():
-    print(f"\n {CLINIC_NAME} ")
+def show_info():
+    print("\n" + "="*35)
+    print(CLINIC)
+    print("="*35)
     print("Tagline: Your Trusted Dental Care Partner")
-    print("About: We provide dental care for patients of all ages.\n")
-    print("Doctor: Dr. Reet Sharma (Reg: 696969-A) | Lead Dentist")
-    print("Highlights: Aesthetic Specialist, Patient-Centered, Certified")
-    print("\nContact Info:")
-    print("SCO 89, 1st Floor, Sec 82, JLPL Ind. Area, Mohali, Punjab")
+    print("Doctor: Dr. Reet Sharma (Reg: 696969-A)")
+    print("Position: Lead Dentist (Aesthetic Specialist)")
+    print("\nAddress:")
+    print("SCO 89, 1st Floor, Sector 82, JLPL Industrial Area, Mohali, Punjab")
     print("Phone: +91 9807645 | Email: odentaestheticdentistry89@gmail.com")
-    print("Timings: Mon-Sat 10:00 AM to 7:00 PM (Sunday Closed)")
+    print("Timings: Mon - Sat (10am to 7pm) | Sunday Closed")
 
 
-def list_services():
-    print("\nAvailable Dental Treatments:")
-    for num, name in enumerate(services_list, 1):
-        print(f" {num}. {name}")
+def print_services():
+    print("\n--- Available Treatments ---")
+    for i in range(len(services)):
+        print(str(i + 1) + ". " + services[i])
 
 
-def create_booking():
-    print("\n[ Book New Slot ]")
-    p_name = input("Enter patient name: ").strip()
-    p_age = input("Age: ").strip()
-    p_phone = input("Phone: ").strip()
-
-    if not p_name or not p_phone:
-        print(">> Missing details. Booking skipped.")
+def add_appointment():
+    print("\n--- Book Appointment ---")
+    name = input("Patient Name: ").strip()
+    if len(name) == 0:
+        print("Name is required.")
         return
 
-    list_services()
-    try:
-        s_idx = int(input("Select service (1-9): ")) - 1
-        if s_idx not in range(len(services_list)):
-            print(">> Invalid service chosen.")
-            return
-        selected_service = services_list[s_idx]
-    except ValueError:
-        print(">> Numeric input only.")
+    age = input("Age: ").strip()
+    contact = input("Contact Number: ").strip()
+
+    print_services()
+
+    chosen_service = ""
+    while True:
+        raw_choice = input("Select service (1-9): ").strip()
+        if raw_choice.isdigit():
+            idx = int(raw_choice) - 1
+            if 0 <= idx < len(services):
+                chosen_service = services[idx]
+                break
+        print("Invalid selection, please try again.")
+
+    pref_date = input("Enter appointment date (DD/MM/YYYY): ").strip()
+
+    print("\nAvailable Time Slots:")
+    for num, slot in enumerate(slots, 1):
+        print(f"[{num}] {slot}")
+
+
+    selected_time = ""
+    slot_input = input("Choose slot number: ").strip()
+    if slot_input.isdigit() and 1 <= int(slot_input) <= len(slots):
+        selected_time = slots[int(slot_input) - 1]
+    else:
+        print("Invalid slot number entered. Cancelling...")
         return
 
-    appt_date = input("Date (DD/MM/YYYY): ").strip()
 
-    print("\nSlots:")
-    for i, t in enumerate(time_slots, 1):
-        print(f" {i}) {t}")
-
-    try:
-        t_idx = int(input("Pick a slot number: ")) - 1
-        if t_idx not in range(len(time_slots)):
-            print(">> Out of bounds slot.")
-            return
-        chosen_slot = time_slots[t_idx]
-    except ValueError:
-        print(">> Invalid slot input.")
-        return
-
-    entry = {
-        "name": p_name,
-        "age": p_age,
-        "phone": p_phone,
-        "service": selected_service,
-        "date": appt_date,
-        "time": chosen_slot
+    patient_data = {
+        "name": name,
+        "age": age,
+        "phone": contact,
+        "service": chosen_service,
+        "date": pref_date,
+        "time": selected_time
     }
-    booked_patients.append(entry)
-    print(f"\n>> Confirmed! {p_name} booked for {selected_service} on {appt_date} at {chosen_slot}.")
+    bookings.append(patient_data)
 
 
-def show_all_bookings():
-    if not booked_patients:
-        print("\n>> Appointment book is currently empty.")
+    print("\nBooking successful!")
+    print(f"Booked: {name} for {chosen_service} on {pref_date} ({selected_time})")
+
+
+
+def view_all():
+    if not bookings:
+        print("\nNo appointments booked yet.")
         return
 
-    print(f"\n Current Bookings ({len(booked_patients)}) ")
-    for i, item in enumerate(booked_patients, 1):
-        print(f"{i}. {item['name']} | {item['service']} | {item['date']} @ {item['time']} | Ph: {item['phone']}")
+    print(f"\nAll Appointments (Total: {len(bookings)})")
+    print("-" * 35)
+    for i, b in enumerate(bookings, 1):
+        print(f"{i}) {b['name']} (Age: {b['age']})")
+        print(f"   Treatment: {b['service']}")
+        print(f"   When: {b['date']} at {b['time']}")
+        print(f"   Contact: {b['phone']}")
 
 
-def search_record():
-    term = input("\nEnter patient name to find: ").lower().strip()
-    hits = [x for x in booked_patients if term in x['name'].lower()]
-    
-    if not hits:
-        print(">> No matching records.")
+
+def search_patient():
+    if len(bookings) == 0:
+        print("\nNo records available to search.")
         return
 
-    print(f">> Found {len(hits)} record(s):")
-    for row in hits:
-        print(f" - {row['name']} ({row['age']} yrs) -> {row['service']} on {row['date']} ({row['time']})")
+    query = input("\nEnter name to search: ").strip().lower()
+    matches = []
+    for b in bookings:
+        if query in b['name'].lower():
+            matches.append(b)
+
+    if not matches:
+        print("No matching patient record found.")
+    else:
+        print(f"Found {len(matches)} match(es):")
+        for m in matches:
+            print(f"- {m['name']} | {m['service']} | {m['date']} ({m['time']}) | Phone: {m['phone']}")
 
 
-def cancel_record():
-    if not booked_patients:
-        print("\n>> Nothing to cancel.")
+
+def cancel_booking():
+    if len(bookings) == 0:
+        print("\nNothing to cancel.")
         return
-    
-    show_all_bookings()
-    try:
-        target = int(input("\nEnter index to cancel: "))
-        if 1 <= target <= len(booked_patients):
-            dropped = booked_patients.pop(target - 1)
-            print(f">> Cancelled booking for {dropped['name']}.")
-        else:
-            print(">> Invalid appointment index.")
-    except ValueError:
-        print(">> Please type a number.")
 
+    view_all()
+    ans = input("\nEnter appointment number to remove: ").strip()
+    if ans.isdigit():
+        idx = int(ans) - 1
+        if 0 <= idx < len(bookings):
+            removed = bookings.pop(idx)
+            print(f"Cancelled booking for {removed['name']}.")
+            return
 
+    print("Invalid index. Nothing removed.")
 
-MENU_ACTIONS = {
-    "1": ("Clinic Overview & Contact", view_overview),
-    "2": ("List Services", list_services),
-    "3": ("Book Appointment", create_booking),
-    "4": ("View All Appointments", show_all_bookings),
-    "5": ("Search by Name", search_record),
-    "6": ("Cancel Appointment", cancel_record),
-}
 
 def main():
     while True:
-        print("\n")
-        print(" DENTAL CLINIC MENU")
-        
-        for key, val in MENU_ACTIONS.items():
-            print(f"{key}. {val[0]}")
+        print("\n==== DENTAL CLINIC MENU ====")
+        print("1. Clinic & Contact Info")
+        print("2. Treatment List")
+        print("3. Book Appointment")
+        print("4. View All Bookings")
+        print("5. Search Patient")
+        print("6. Cancel Appointment")
         print("7. Exit")
 
-        choice = input("\nAction: ").strip()
-        if choice == "7":
-            print("Goodbye!")
+        opt = input("Enter choice (1-7): ").strip()
+
+        if opt == "1":
+            show_info()
+        elif opt == "2":
+            print_services()
+        elif opt == "3":
+            add_appointment()
+        elif opt == "4":
+            view_all()
+        elif opt == "5":
+            search_patient()
+        elif opt == "6":
+            cancel_booking()
+        elif opt == "7":
+            print("Exiting application. Goodbye!")
             break
-        elif choice in MENU_ACTIONS:
-            MENU_ACTIONS[choice][1]()
         else:
-            print(">> Unknown choice, try again.")
+            print("Invalid input. Please enter a number between 1 and 7.")
+
 
 
 if __name__ == "__main__":
