@@ -20,7 +20,7 @@ booked_patients = []
 
 
 def view_overview():
-    print(f"\n--- {CLINIC_NAME} ---")
+    print(f"\n {CLINIC_NAME} ")
     print("Tagline: Your Trusted Dental Care Partner")
     print("About: We provide dental care for patients of all ages.\n")
     print("Doctor: Dr. Reet Sharma (Reg: 696969-A) | Lead Dentist")
@@ -91,7 +91,7 @@ def show_all_bookings():
         print("\n>> Appointment book is currently empty.")
         return
 
-    print(f"\n--- Current Bookings ({len(booked_patients)}) ---")
+    print(f"\n Current Bookings ({len(booked_patients)}) ")
     for i, item in enumerate(booked_patients, 1):
         print(f"{i}. {item['name']} | {item['service']} | {item['date']} @ {item['time']} | Ph: {item['phone']}")
 
@@ -138,9 +138,9 @@ MENU_ACTIONS = {
 
 def main():
     while True:
-        print("\n====================")
+        print("\n")
         print(" DENTAL CLINIC MENU")
-        print("====================")
+        
         for key, val in MENU_ACTIONS.items():
             print(f"{key}. {val[0]}")
         print("7. Exit")
