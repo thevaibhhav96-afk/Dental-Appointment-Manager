@@ -44,11 +44,5 @@ The project is intended as an academic implementation of a small-scale appointme
 
 - Dental clinics
 - Dental hospitals
-- Dentists
-- Dental clinic staff
-- Receptionists
-- Clinic administrators
 - Patients
-- Clinic managers
-- Appointment coordinators
 - Small and medium-sized dental practices
